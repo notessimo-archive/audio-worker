@@ -39,6 +39,7 @@ class NoiseWorker extends BasicWorker<AudioWorkerParams<Void>, Float32Array> {
 ```
 
 Sample using Float as data:
+
 Notice the `requestBufferUsing` which return the frequency that is sent to the worker
 ```haxe
 // Array of frequencies
