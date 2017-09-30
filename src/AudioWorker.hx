@@ -7,14 +7,15 @@ import net.rezmason.utils.workers.QuickBoss;
 
 using OptionTools;
 
-typedef AudioBoss = QuickBoss<AudioWorkerParams, Float32Array>;
+typedef AudioBoss<T> = QuickBoss<AudioWorkerParams<T>, Float32Array>;
 
-class AudioWorker {
+@:generic
+class AudioWorker<T> {
 
     var _buffers : Array<Float32Array> = [];
     var _golem : Core<Bytes, Float32Array>;
 
-    var _boss : Option<AudioBoss> = None;
+    var _boss : Option<AudioBoss<T>> = None;
 
     var _bufferSamples : Int;
     var _sampleRate : Float;
@@ -22,7 +23,7 @@ class AudioWorker {
 
     var _position : Int;
 
-    var _requestBuffer : Option<Int->Bytes> = None;
+    var _requestBuffer : Option<Int->T> = None;
 
     /**
      *  Create a new AudioWorker
@@ -31,8 +32,8 @@ class AudioWorker {
      *  @param nBuffer - Number of buffers to keep in memory
      *  @param sampleRate - Sample rate
      */
-    public static function create( golem, bufferSamples : Int = 8192, sampleRate : Float = 44100.0, ?nBuffer : Int = 2 ) {
-        var worker = new AudioWorker(golem, bufferSamples, sampleRate, nBuffer);
+    public static function create<T>( golem, bufferSamples : Int = 8192, sampleRate : Float = 44100.0, ?nBuffer : Int = 2 ) {
+        var worker = new AudioWorker<T>(golem, bufferSamples, sampleRate, nBuffer);
         return worker;
     }
 
@@ -48,7 +49,7 @@ class AudioWorker {
         _position = 0;
     }
 
-    public function requestBufferUsing( requestBuffer : Int->Bytes ) {
+    public function requestBufferUsing( requestBuffer : Int->T ) {
         _requestBuffer = Some(requestBuffer);
 
         return this;
@@ -65,7 +66,7 @@ class AudioWorker {
         return this;
     }
 
-    public function start() : AudioWorker {
+    public function start() : AudioWorker<T> {
         stop();
 
         var boss = new AudioBoss(_golem, (buffer) -> {
@@ -103,9 +104,9 @@ class AudioWorker {
         }
     }
 
-    function send( ?bytes : Bytes = null ) {
+    function send( ?data : T = null ) {
         switch( _boss ) {
-            case Some(boss) : boss.send({ samples: _bufferSamples, sampleRate: _sampleRate, data : bytes});
+            case Some(boss) : boss.send({ samples: _bufferSamples, sampleRate: _sampleRate, data : data});
             case None : 
         }
     }

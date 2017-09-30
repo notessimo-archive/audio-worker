@@ -1,7 +1,5 @@
-import haxe.io.Bytes;
-
-typedef AudioWorkerParams = {
+typedef AudioWorkerParams<T> = {
     var samples : Int;
     var sampleRate : Float;
-    @:optional var data : Bytes;
+    @:optional var data : T;
 }

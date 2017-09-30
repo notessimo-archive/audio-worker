@@ -2,11 +2,9 @@
 
 A wrapper over `golems` which create a worker that can generate audio buffer from arbitrary data
 
-Currently that "data" is Bytes, I might make it more generic in the future but the idea was to have something very low level
-
 Support vanilla js, swf and openfl.
 
-Sample:
+Sample using no data:
 ```haxe
 // Create the AudioPlayer
 var audio = AudioPlayer.create();
