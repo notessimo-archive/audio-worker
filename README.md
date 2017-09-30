@@ -32,8 +32,8 @@ class NoiseWorker extends BasicWorker<AudioWorkerParams, Float32Array> {
 
         for( i in 0...params.samples ) {
             var noise = Math.random() * 2 - 1;
-            buffer.set(i << 1, noise);
-            buffer.set(i << 1 + 1, noise);
+            buffer.set(i << 1, noise); // Left
+            buffer.set(i << 1 + 1, noise); // Right
         }
 
         return buffer;
