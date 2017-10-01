@@ -1,5 +1,4 @@
 import haxe.ds.Option;
-import haxe.io.Bytes;
 import haxe.io.Float32Array;
 
 import net.rezmason.utils.workers.BasicBoss;
@@ -13,7 +12,7 @@ typedef AudioBoss<T> = QuickBoss<AudioWorkerParams<T>, Float32Array>;
 class AudioWorker<T> {
 
     var _buffers : Array<Float32Array> = [];
-    var _golem : Core<Bytes, Float32Array>;
+    var _golem : Core<AudioWorkerParams<T>, Float32Array>;
 
     var _boss : Option<AudioBoss<T>> = None;
 
